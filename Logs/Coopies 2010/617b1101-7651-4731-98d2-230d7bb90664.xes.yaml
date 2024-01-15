@@ -1,0 +1,675 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __INVALID__
+      cpee:name: __INVALID__
+    event:
+      concept:instance: -1
+      concept:name: __INVALID__
+      concept:endpoint: ''
+      id:id: ''
+      cpee:uuid: ''
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 27744
+    cpee:name: Enter info here
+    cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2024-01-14T21:59:10.384+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: bookAir
+    value: http://gruppe.wst.univie.ac.at/~mangler/services/airline.php
+  - name: timeout
+    value: https://cpee.org/services/timeout.php
+  - name: bookHotel
+    value: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  - name: subprocess
+    value: https://cpee.org/flow/start/url/
+  - name: approve
+    value: http://gruppe.wst.univie.ac.at/~mangler/services/approval.php
+  time:timestamp: '2024-01-14T21:59:15.693+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: persons
+    value: 3
+  - name: card
+    value: Visa_12345
+  - name: airline
+    value: ''
+  - name: hotels
+    value: []
+  - name: from
+    value: Vienna
+  - name: to
+    value: Prague
+  - name: costs
+    value: 0
+  time:timestamp: '2024-01-14T21:59:15.690+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: theme
+    value: extended
+  - name: info
+    value: Coopis 2010
+  - name: creator
+    value: Christine Ashcreek
+  - name: author
+    value: Christine Ashcreek
+  - name: modeltype
+    value: CPEE
+  - name: design_stage
+    value: development
+  - name: guarded
+    value: none
+  - name: design_dir
+    value: Templates.dir
+  - name: guarded_id
+    value: ''
+  - name: model_uuid
+    value: a1cbb855-90e3-4d8c-b44b-d3ba7bff9f4e
+  - name: model_version
+    value: ''
+  time:timestamp: '2024-01-14T21:59:15.702+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a1" endpoint="bookAir">
+        <parameters>
+          <label>Book Airline 1</label>
+          <method>:post</method>
+          <arguments>
+            <from>!data.from</from>
+            <to>!data.to</to>
+            <persons>!data.persons</persons>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.airline = result.value('id')
+    data.costs += result.value('costs').to_f
+    status.update 1, 'Hotel'</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <parallel wait="-1" cancel="last">
+        <loop mode="pre_test" condition="data.persons &gt; 0">
+          <parallel_branch>
+            <call id="a2" endpoint="bookHotel">
+              <parameters>
+                <label>Book Hotel</label>
+                <method>:post</method>
+                <arguments>
+                  <to>!data.to</to>
+                </arguments>
+              </parameters>
+              <code>
+                <prepare/>
+                <finalize output="result">data.hotels &lt;&lt; result.value('id')
+    data.costs += result.value('costs').to_f</finalize>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+          </parallel_branch>
+          <manipulate id="a3">data.persons -= 1</manipulate>
+        </loop>
+      </parallel>
+      <choose mode="inclusive">
+        <alternative condition="data.costs &gt; 700">
+          <call id="a4" endpoint="approve">
+            <parameters>
+              <label>Approve Hotel</label>
+              <method>:post</method>
+              <arguments>
+                <costs>!data.costs</costs>
+              </arguments>
+            </parameters>
+            <annotations>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+            </documentation>
+          </call>
+        </alternative>
+      </choose>
+    </description>
+  time:timestamp: '2024-01-14T21:59:15.710+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2024-01-14T21:59:15.802+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2024-01-14T21:59:29.588+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Airline 1
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/airline.php
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: efe7e198589d65de1c8458ad76b938c0
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: from
+    value: Vienna
+  - name: to
+    value: Prague
+  - name: persons
+    value: 3
+  time:timestamp: '2024-01-14T21:59:29.637+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Airline 1
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/airline.php
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: efe7e198589d65de1c8458ad76b938c0
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: id
+    data: American Airlines
+  - name: costs
+    data: '469'
+  time:timestamp: '2024-01-14T21:59:33.652+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Airline 1
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/airline.php
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: efe7e198589d65de1c8458ad76b938c0
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: airline
+    value: American Airlines
+  - name: costs
+    value: 469.0
+  time:timestamp: '2024-01-14T21:59:33.673+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Airline 1
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/airline.php
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: efe7e198589d65de1c8458ad76b938c0
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:33.674+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 2091e5c3f3ee6d89a3fca09bb5e7d262
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: persons
+    value: 2
+  time:timestamp: '2024-01-14T21:59:33.697+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 2091e5c3f3ee6d89a3fca09bb5e7d262
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:33.697+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 395494fc3ce60ec6f2a45996d24362e6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: persons
+    value: 1
+  time:timestamp: '2024-01-14T21:59:33.725+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 395494fc3ce60ec6f2a45996d24362e6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:33.727+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: a342e366922d2d5b6e9d425d3e803d45
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: persons
+    value: 0
+  time:timestamp: '2024-01-14T21:59:33.764+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: a342e366922d2d5b6e9d425d3e803d45
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:33.764+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 702152fb5f2c44f73e9b14ace3bcd264
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: to
+    value: Prague
+  time:timestamp: '2024-01-14T21:59:33.833+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 761170e80f06f26905b138b397ab66fd
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: to
+    value: Prague
+  time:timestamp: '2024-01-14T21:59:33.854+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 65489d721f775732784167f81ab46dd6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: to
+    value: Prague
+  time:timestamp: '2024-01-14T21:59:33.857+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 702152fb5f2c44f73e9b14ace3bcd264
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: id
+    data: Rathaus
+  - name: costs
+    data: '99'
+  time:timestamp: '2024-01-14T21:59:35.843+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 702152fb5f2c44f73e9b14ace3bcd264
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: costs
+    value: 568.0
+  - name: hotels
+    value:
+    - Rathaus
+  time:timestamp: '2024-01-14T21:59:35.869+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 702152fb5f2c44f73e9b14ace3bcd264
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:35.870+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 761170e80f06f26905b138b397ab66fd
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: id
+    data: Rathaus
+  - name: costs
+    data: '154'
+  time:timestamp: '2024-01-14T21:59:35.871+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 65489d721f775732784167f81ab46dd6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: id
+    data: Ibis
+  - name: costs
+    data: '167'
+  time:timestamp: '2024-01-14T21:59:35.891+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 761170e80f06f26905b138b397ab66fd
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:35.924+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 65489d721f775732784167f81ab46dd6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:35.925+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 761170e80f06f26905b138b397ab66fd
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: costs
+    value: 722.0
+  - name: hotels
+    value:
+    - Rathaus
+    - Rathaus
+  time:timestamp: '2024-01-14T21:59:35.924+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Book Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/hotel.php
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 65489d721f775732784167f81ab46dd6
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: costs
+    value: 889.0
+  - name: hotels
+    value:
+    - Rathaus
+    - Rathaus
+    - Ibis
+  time:timestamp: '2024-01-14T21:59:35.925+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2024-01-14T21:59:36.001+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Approve Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/approval.php
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 930c00862a716904362f77000065a06e
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: costs
+    value: 889.0
+  time:timestamp: '2024-01-14T21:59:36.017+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Approve Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/approval.php
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 930c00862a716904362f77000065a06e
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2024-01-14T21:59:46.024+01:00'
+---
+event:
+  concept:instance: 27744
+  concept:name: Approve Hotel
+  concept:endpoint: http://gruppe.wst.univie.ac.at/~mangler/services/approval.php
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 930c00862a716904362f77000065a06e
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2024-01-14T21:59:46.046+01:00'
+---
+event:
+  concept:instance: 27744
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 617b1101-7651-4731-98d2-230d7bb90664
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2024-01-14T21:59:46.070+01:00'

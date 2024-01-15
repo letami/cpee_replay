@@ -1,0 +1,348 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __INVALID__
+      cpee:name: __INVALID__
+    event:
+      concept:instance: -1
+      concept:name: __INVALID__
+      concept:endpoint: ''
+      id:id: ''
+      cpee:uuid: ''
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 23823
+    cpee:name: Enter info here
+    cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2023-11-29T10:50:33.205+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: user
+    value: https-post://cpee.org/services/timeout-user.php
+  - name: auto
+    value: https-post://cpee.org/services/timeout-auto.php
+  - name: subprocess
+    value: https-post://cpee.org/flow/start/url/
+  - name: timeout
+    value: https://cpee.org/services/timeout.php
+  - name: send
+    value: https-post://cpee.org/ing/correlators/message/send/
+  - name: receive
+    value: https-get://cpee.org/ing/correlators/message/receive/
+  - name: costs
+    value: https://lehre.bpm.in.tum.de/ports/17002/costs
+  - name: status
+    value: https://lehre.bpm.in.tum.de/ports/17002/status
+  time:timestamp: '2023-11-29T10:51:38.520+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: info
+    value: Testset for SVM
+  - name: modeltype
+    value: CPEE
+  - name: theme
+    value: preset
+  time:timestamp: '2023-11-29T10:51:38.523+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: costs
+    value: 0
+  - name: status
+    value: ''
+  time:timestamp: '2023-11-29T10:51:38.519+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a3" endpoint="costs">
+        <parameters>
+          <label>Get random costs</label>
+          <method>:get</method>
+          <arguments/>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.costs += result.value('costs').to_f</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a4" endpoint="status">
+        <parameters>
+          <label>Get approval or denial</label>
+          <method>:post</method>
+          <arguments>
+            <costs>!data.costs</costs>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.status = result.value('status')</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  time:timestamp: '2023-11-29T10:51:38.533+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2023-11-29T10:51:38.586+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2023-11-29T10:52:08.699+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get random costs
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/costs
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 69d75de81dc0240bf94eb18ba1254f27
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2023-11-29T10:52:08.769+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get random costs
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/costs
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 69d75de81dc0240bf94eb18ba1254f27
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: test
+    data: hello
+  - name: costs
+    data: '43'
+  time:timestamp: '2023-11-29T10:52:08.925+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get random costs
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/costs
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 69d75de81dc0240bf94eb18ba1254f27
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: costs
+    value: 43.0
+  time:timestamp: '2023-11-29T10:52:08.952+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get random costs
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/costs
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 69d75de81dc0240bf94eb18ba1254f27
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2023-11-29T10:52:08.953+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get approval or denial
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/status
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: cf8112deb4229d980edb2d9e01d576ec
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: costs
+    value: 43.0
+  time:timestamp: '2023-11-29T10:52:09.005+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get approval or denial
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/status
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: cf8112deb4229d980edb2d9e01d576ec
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  raw:
+  - name: test
+    data: hello
+  - name: status
+    data: deny
+  time:timestamp: '2023-11-29T10:52:09.100+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get approval or denial
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/status
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: cf8112deb4229d980edb2d9e01d576ec
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: status
+    value: deny
+  time:timestamp: '2023-11-29T10:52:09.129+01:00'
+---
+event:
+  concept:instance: 23823
+  concept:name: Get approval or denial
+  concept:endpoint: https://lehre.bpm.in.tum.de/ports/17002/status
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: cf8112deb4229d980edb2d9e01d576ec
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2023-11-29T10:52:09.129+01:00'
+---
+event:
+  concept:instance: 23823
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 66f4401f-2288-4b3a-a83d-5c717c56f958
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2023-11-29T10:52:09.153+01:00'
